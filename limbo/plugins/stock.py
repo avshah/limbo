@@ -13,8 +13,8 @@ import requests
 logger = logging.getLogger(__name__)
 
 def stockprice(ticker):
-    url = "https://www.google.com/finance?q={0}"
-    soup = BeautifulSoup(requests.get(url.format(quote(ticker))).text, "html5lib")
+    url = "https://www.google.com/finance?q={0}".format(quote(ticker))
+    soup = BeautifulSoup(requests.get(url).text, "html5lib")
 
     try:
         company, ticker = re.findall(u"^(.+?)\xa0\xa0(.+?)\xa0", soup.text, re.M)[0]
@@ -29,8 +29,8 @@ def stockprice(ticker):
     emoji = ":chart_with_upwards_trend:" if change.startswith("+") \
             else ":chart_with_downwards_trend:"
 
-    return "{0} {1} {2}: {3} {4} {5} {6} {7}".format(
-            emoji, company, ticker, price, change, pct, time, emoji)
+    return "{0} {1} {2}: {3} {4} {5} {6} {7}\n {8}".format(
+            emoji, company, ticker, price, change, pct, time, emoji, url)
 
 
 def on_message(msg, server):
